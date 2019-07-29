@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}Step {{ step.title }}{% endblock %}
+
+{% block content %}
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="padding:10px 15px;margin:15px 0px 15px 0px;">
+                <h2 class="text-center" style="color:rgb(255,255,255);">{{ step.title }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="container">
+        <div class="row mx-auto">
+            <div style="margin-left: 10%;" class="col-12 col-sm-12 col-xl-10">
+                    <div class="iframe-container">
+                        <center><iframe width="520" height="315" src="{{ step.video_url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
+                    </div>
+            </div>
+            <div style="margin-left: 10%;" class="col-8 col-sm-12 col-xl-5">
+                {{ step.content|linebreaks }}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="space col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 mx-auto">
+{% if step %}
+    <div class="row">
+        {% if previous_step_pk %}
+        <div class="col-md-6">
+            <a href="{% url 'step' task_pk=step.task.pk step_pk=previous_step_pk %}">
+                <button class="btn btn-primary btn-block" type="button" style="background-color:rgba(0,123,255,0);margin-bottom:0px;">Previous Step</button>
+            </a>
+        </div>
+        {% endif %}
+        {% if next_step_pk %}
+        <div class="col-md-6">
+            <a href="{% url 'step' task_pk=step.task.pk step_pk=next_step_pk %}">
+                <button class="btn btn-primary btn-block" type="button" style="background-color:rgba(0,123,255,0);margin-bottom:0px;">Next Step</button>
+            </a>
+        </div>
+        {% else %}
+        <div class="col-md-6">
+            <a href="{% url 'finish_task' pk=step.task.pk %}">
+                <button class="btn btn-primary btn-block" type="button" style="background-color:rgba(0,123,255,0);margin-bottom:0px;">Finish Task</button>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+ {% else %}
+    <p>There is no task. </p>
+ {% endif %}
+</div>
+{% endblock content %}
