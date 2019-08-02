@@ -12,14 +12,17 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
+
 class RegisterFormView(View):
     form_class = RegisterForm
     template_name = 'account/registration_form.html'
+
 
     # display blank form
     def get(self, request):
         form = self.form_class(None)
         return render(request, self.template_name, {'form': form})
+
 
     # process form data
     def post(self, request):
@@ -69,6 +72,7 @@ def edit_profile(request):
         args = {'form': form}
         return render(request, 'account/edit_profile.html', args)
 
+
 def setTimeZone(request):
     if request.method == 'GET':
         try:
@@ -79,6 +83,7 @@ def setTimeZone(request):
         except Exception as e:
             print(e)
     return JsonResponse({'message':'success'})
+
 
 def change_password(request):
     if request.method == 'POST':
