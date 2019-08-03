@@ -40,6 +40,7 @@ def card_edit(request):
             payment_token_id.token = customer.id
             payment_token_id.save()
     form = CardForm()
+
     return render(request, 'payment/edit.html',
                   {
                       'form': form,
@@ -65,12 +66,14 @@ def card_register(request):
     user = request.user
     customer = None
     error = None
+
     if request.method == 'POST':
         form = CardForm(request.POST)
         if form.is_valid():
             res = NewStripeSDK.create_customer(form.cleaned_data['email'], form.cleaned_data['stripe_token'])
             customer = res.get('data')
             error = res.get('error')
+
             if customer:
                 token = PaymentToken(
                     last_4_digits=form.cleaned_data['last_4_digits'],
@@ -79,7 +82,9 @@ def card_register(request):
                     email=form.cleaned_data['email'],
                     name=form.cleaned_data['name'],
                 )
+
                 token.save()
+
     tokens = PaymentToken.objects.filter(user=user)
     form = CardForm()
     return render(request, 'payment/register.html',
@@ -107,5 +112,6 @@ def subscription(request):
         plan=subscription_plan,
         user=user,
     )
+
     print(subscription.stripe_subscription_id)
     return redirect('accounts:view_profile')

@@ -19,6 +19,7 @@ def saveUser(request):
         user.userprofile.completed_at = json.dumps(values)
     user.userprofile.save()
 
+
 @login_required(login_url="/login")
 def task_done(request, pk):
     user = request.user

@@ -41,6 +41,7 @@ class SubscriptionPlanAdmin(admin.ModelAdmin):
         extra_context['show_save'] = False
         return super(SubscriptionPlanAdmin, self).changeform_view(request, object_id, extra_context=extra_context)
 
+
 class SubscriptionAdmin(admin.ModelAdmin):
     readonly_fields = ('stripe_subscription_id',)
     def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
@@ -49,6 +50,7 @@ class SubscriptionAdmin(admin.ModelAdmin):
         extra_context['show_save_and_add_another'] = False
         extra_context['show_save'] = False
         return super(SubscriptionAdmin, self).changeform_view(request, object_id, extra_context=extra_context)
+
 
 admin.site.register(PaymentToken, PaymentTokenAdmin)
 admin.site.register(SubscriptionPlan, SubscriptionPlanAdmin)

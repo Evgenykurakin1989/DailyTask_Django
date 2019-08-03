@@ -5,6 +5,8 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 from contextlib import contextmanager
 from ebdjango import settings
+
+
 @contextmanager
 def handle_error():
     result = dict(data=None, error=None)
@@ -20,6 +22,7 @@ def handle_error():
     except Exception as e:
         result['error'] = '%s'%e 
         return result
+
 
 def get_decorator():
     def decorator(func):

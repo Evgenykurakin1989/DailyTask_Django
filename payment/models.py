@@ -9,6 +9,8 @@ from django.dispatch import receiver
 from ebdjango import settings
 from .stripe_api import NewStripeSDK
 # Create your models here.
+
+
 class PaymentTransaction(models.Model):
     date_created = models.DateTimeField(
         _('created'),auto_now_add=True,db_index=True)
@@ -27,6 +29,7 @@ class PaymentTransaction(models.Model):
     def __str__(self):
         return '**%s'% self.txn_id or 'None'
 
+
 class PaymentToken(models.Model):
     date_created = models.DateTimeField( _('created'), auto_now_add=True, db_index=True)
     date_updated = models.DateTimeField( _('updated'), auto_now=True, db_index=True)
@@ -40,7 +43,6 @@ class PaymentToken(models.Model):
         return '**%s'% self.token[::-4] or 'None'
 
 
-
 class SubscriptionPlan(models.Model):
     date_created = models.DateTimeField( _('created'), auto_now_add=True, db_index=True)
     date_updated = models.DateTimeField( _('updated'), auto_now=True, db_index=True)
@@ -51,6 +53,7 @@ class SubscriptionPlan(models.Model):
 
     def __str__(self):
         return '**%s'% self.name or 'None'
+
 
 class Subscription(models.Model):
     date_created = models.DateTimeField( _('created'), auto_now_add=True, db_index=True)
@@ -73,7 +76,6 @@ def delete_stripe_customer(sender, instance, **kwargs):
     #print(instance,'delete====================',res)
     if res.get('error'):
         raise Exception(res.get('error'))
-
 
 
 @receiver(post_save, sender=SubscriptionPlan, dispatch_uid="create_stripe_subscription_plan")
@@ -101,7 +103,6 @@ def delete_stripe_subscription_plan(sender, instance, **kwargs):
         raise Exception(res.get('error'))
 
 
-
 @receiver(post_save, sender=Subscription, dispatch_uid="create_stripe_subscription")
 def create_stripe_subscription(sender, instance, **kwargs):
     if kwargs['created']:
@@ -115,7 +116,6 @@ def create_stripe_subscription(sender, instance, **kwargs):
             instance.save()
             post_save.connect(create_stripe_subscription, sender=SubscriptionPlan)
         #print(instance,'create====================',res)
-
 
 
 @receiver(post_delete, sender=Subscription, dispatch_uid="delete_stripe_subscription")
